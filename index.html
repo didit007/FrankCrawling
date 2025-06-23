@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Crawler Google News</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container py-5">
+  <h2 class="mb-4">Crawler Google News</h2>
+
+  <form method="POST" class="mb-4">
+    <div class="row g-2">
+      <div class="col-md-4">
+        <input type="text" class="form-control" name="keyword" placeholder="Masukkan kata kunci" value="{{ keyword }}" required>
+      </div>
+      <div class="col-md-3">
+        <input type="date" class="form-control" name="tanggal_mulai" value="{{ tanggal_mulai }}">
+      </div>
+      <div class="col-md-3">
+        <input type="date" class="form-control" name="tanggal_akhir" value="{{ tanggal_akhir }}">
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Cari</button>
+      </div>
+    </div>
+  </form>
+
+  {% if jumlah_berita is not none %}
+    {% if jumlah_berita > 0 %}
+    <div class="alert alert-success">✅ Crawling selesai! Ditemukan {{ jumlah_berita }} berita.</div>
+    {% else %}
+    <div class="alert alert-warning">⚠️ Tidak ada berita ditemukan.</div>
+    {% endif %}
+  {% endif %}
+
+  {% if hasil %}
+    <a href="/unduh" class="btn btn-success mb-3">📥 Unduh Excel</a>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead class="table-light">
+          <tr>
+            <th>Judul</th>
+            <th>Tanggal</th>
+            <th>URL</th>
+            <th>Isi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in hasil %}
+          <tr>
+            <td>{{ item.Judul }}</td>
+            <td>{{ item.Tanggal }}</td>
+            <td><a href="{{ item.URL }}" target="_blank">Buka</a></td>
+            <td>{{ item.Isi[:200] }}...</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
+</div>
+</body>
+</html>
